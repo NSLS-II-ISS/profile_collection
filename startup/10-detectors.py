@@ -14,6 +14,8 @@ from ophyd import DeviceStatus, set_and_wait
 from ophyd.status import SubscriptionStatus
 from ophyd.sim import NullStatus
 
+from nslsii.ad33 import StatsPluginV33
+
 from datetime import datetime
 
 from databroker.assets.handlers_base import HandlerBase
@@ -25,8 +27,8 @@ def print_now():
 
 class BPM(SingleTrigger, ProsilicaDetector):
     image = Cpt(ImagePlugin, 'image1:')
-    stats1 = Cpt(StatsPlugin, 'Stats1:')
-    stats2 = Cpt(StatsPlugin, 'Stats2:')
+    stats1 = Cpt(StatsPluginV33, 'Stats1:')
+    stats2 = Cpt(StatsPluginV33, 'Stats2:')
     roi1 = Cpt(ROIPlugin, 'ROI1:')
     roi2 = Cpt(ROIPlugin, 'ROI2:')
     counts = Cpt(EpicsSignal, 'Pos:Counts')
@@ -66,8 +68,8 @@ class BPM(SingleTrigger, ProsilicaDetector):
 
 class CAMERA(SingleTrigger, ProsilicaDetector):
     image = Cpt(ImagePlugin, 'image1:')
-    stats1 = Cpt(StatsPlugin, 'Stats1:')
-    stats2 = Cpt(StatsPlugin, 'Stats2:')
+    stats1 = Cpt(StatsPluginV33, 'Stats1:')
+    stats2 = Cpt(StatsPluginV33, 'Stats2:')
     roi1 = Cpt(ROIPlugin, 'ROI1:')
     roi2 = Cpt(ROIPlugin, 'ROI2:')
     exp_time = Cpt(EpicsSignal, 'cam1:AcquireTime_RBV', write_pv='cam1:AcquireTime')
