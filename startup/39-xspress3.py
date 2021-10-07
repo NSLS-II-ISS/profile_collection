@@ -108,9 +108,9 @@ class ISSXspress3Detector(XspressTrigger, Xspress3Detector):
     mca4 = Cpt(EpicsSignal, 'ARR4:ArrayData')
 
     hdf5 = Cpt(Xspress3FileStoreFlyable, 'HDF5:',
-               read_path_template='/nsls2/xf08id/data/xspress3/%Y/%m/%d/',
-               root='/nsls2/xf08id/data/',
-               write_path_template='/nsls2/xf08id/data/xspress3/%Y/%m/%d/',
+               read_path_template=f'{ROOT_PATH}/{RAW_PATH}/xspress3/%Y/%m/%d/',
+               root=f'{ROOT_PATH}/{RAW_PATH}/',
+               write_path_template=f'{ROOT_PATH}/{RAW_PATH}/xspress3/%Y/%m/%d/',
                )
 
 

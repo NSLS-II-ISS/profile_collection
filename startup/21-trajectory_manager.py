@@ -14,7 +14,7 @@ class TrajectoryManager():
     def __init__(self, hhm, **kwargs):
         self.hhm = hhm
         self.traj_info = {}
-        self.trajectory_path = '/nsls2/xf08id/trajectory/'
+        self.trajectory_path = f'{ROOT_PATH_SHARED}/trajectory/'
 
     # Function used to count the number of lines in a file
     def file_len(self, fname):

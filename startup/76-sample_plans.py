@@ -28,7 +28,7 @@ def optimize_sample_plan(*args, **kwargs):
     # uid = (yield from spiral_plan)
     #
     conc = kwargs['concentration']
-    # image_path = f"{ROOT_PATH}/{USER_FILEPATH}/{RE.md['year']}/{RE.md['cycle']}/{RE.md['PROPOSAL']}/{sample_name}_raster_scan.png"
+    # image_path = f"{ROOT_PATH}/{USER_PATH}/{RE.md['year']}/{RE.md['cycle']}/{RE.md['PROPOSAL']}/{sample_name}_raster_scan.png"
     # print('analyzing spiral scan data and saving the image for the reference')
     # x, y = analyze_spiral_scan(db, uid, conc, None, image_path)
     x, y = analyze_spiral_scan(db, 'bbd9f23f-011e-40eb-b798-eb2a2ad5cfa8', conc, None, None)

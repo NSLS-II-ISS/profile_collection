@@ -15,7 +15,7 @@ def execute_trajectory(name, **metadata):
     flyers = [pba2.adc7, pba1.adc6, pba1.adc1, pba2.adc6, pba1.adc7, pb9.enc1]
 
     def inner():
-        interp_fn = f"{ROOT_PATH}/{USER_FILEPATH}/{RE.md['year']}/{RE.md['cycle']}/{RE.md['PROPOSAL']}/{name}.raw"
+        interp_fn = f"{ROOT_PATH}/{USER_PATH}/{RE.md['year']}/{RE.md['cycle']}/{RE.md['PROPOSAL']}/{name}.raw"
         interp_fn = validate_file_exists(interp_fn)
         print(f'Filepath  {interp_fn}')
         curr_traj = getattr(hhm, 'traj{:.0f}'.format(hhm.lut_number_rbv.get()))
@@ -252,7 +252,7 @@ def execute_xia_trajectory(name, **metadata):
                         xia_rois[roi.high.name] = roi.high.get() * max_energy / 2048
                         xia_rois[roi.low.name] = roi.low.get() * max_energy / 2048
 
-        interp_fn = f"{ROOT_PATH}/{USER_FILEPATH}/{RE.md['year']}.{RE.md['cycle']}.{RE.md['PROPOSAL']}/{name}.txt"
+        interp_fn = f"{ROOT_PATH}/{USER_PATH}/{RE.md['year']}.{RE.md['cycle']}.{RE.md['PROPOSAL']}/{name}.txt"
         curr_traj = getattr(hhm, 'traj{:.0f}'.format(hhm.lut_number_rbv.get()))
         try:
             full_element_name = getattr(elements, curr_traj.elem.get()).name.capitalize()

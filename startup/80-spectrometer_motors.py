@@ -31,7 +31,13 @@ class EmissionEnergyMotor(PseudoPositioner):
         self.cr_x0=None
         self.cr_y0=None
         self.det_y0=None
-        self.spectrometer_root_path = f"{ROOT_PATH}/{USER_FILEPATH}"
+        self.spectrometer_root_path = f"{ROOT_PATH}/{USER_PATH}"
+
+        # ROOT_PATH = '/nsls2/data/iss/legacy'
+        #
+        # RAW_PATH = 'raw'
+        # USER_PATH = 'processed'
+
         self._initialized = False
 
 
@@ -113,7 +119,7 @@ class SamplePointRegistry:
     current_index = None
     xyz1 = None
     xyz2 = None
-    root_path = f"{ROOT_PATH}/{USER_FILEPATH}"
+    root_path = f"{ROOT_PATH}/{USER_PATH}"
     _dumpfile = None
     npoints = None
 

@@ -27,7 +27,7 @@ def generate_tune_table(motor=hhm.energy, start_energy=5000, stop_energy=13000, 
 
 def set_reference_foil(element:str = 'Mn'):
     # Adding reference foil element list
-    with open('/nsls2/xf08id/settings/json/foil_wheel.json') as fp:
+    with open(f'{ROOT_PATH_SHARED}/settings/json/foil_wheel.json') as fp:
         reference_foils = json.load(fp)
     elems = [item['element'] for item in reference_foils]
 
@@ -49,7 +49,7 @@ def set_reference_foil(element:str = 'Mn'):
 
 def set_attenuator(thickness:int  = 0):
     # Adding reference foil element list
-    with open('/nsls2/xf08id/settings/json/attenuator.json') as fp:
+    with open(f'{ROOT_PATH_SHARED}/settings/json/attenuator.json') as fp:
         attenuators_list = json.load(fp)
     thickness_list = [item['attenuator'] for item in attenuators_list]
 
@@ -114,7 +114,7 @@ def get_offsets (time:int = 2, *args, **kwargs):
 
 
 def record_offsets_plan(suffix=''):
-    fpath = '/nsls2/xf08id/log/offsets/' + str(datetime.now()).replace(':', '-')[:-7] + suffix + '.dat'
+    fpath = f'{ROOT_PATH_SHARED}/log/offsets/' + str(datetime.now()).replace(':', '-')[:-7] + suffix + '.dat'
     uid = (yield from get_offsets())
     table = db[uid].table()
     table.to_csv(fpath)

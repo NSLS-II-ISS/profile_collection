@@ -52,7 +52,7 @@ def adaq_pb_step_per_step_factory(energy_steps, time_steps):
 
 def step_scan_plan(name, comment, energy_steps, time_steps, detectors, element='', e0=0, edge=''):
     print(f'Edge in plan {edge}')
-    fn = f"{ROOT_PATH}/{USER_FILEPATH}/{RE.md['year']}/{RE.md['cycle']}/{RE.md['PROPOSAL']}/{name}.dat"
+    fn = f"{ROOT_PATH}/{USER_PATH}/{RE.md['year']}/{RE.md['cycle']}/{RE.md['PROPOSAL']}/{name}.dat"
     fn = validate_file_exists(fn)
 
 

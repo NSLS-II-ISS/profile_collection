@@ -225,8 +225,8 @@ def make_filename(filename):
     '''
         Makes a rootpath, filepath pair
     '''
-    # RAW_FILEPATH is a global defined in 00-startup.py
-    write_path_template = os.path.join(RAW_FILEPATH, '%Y/%m/%d')
+    # RAW_PATH is a global defined in 00-startup.py
+    write_path_template = os.path.join('encpb','%Y/%m/%d')
     # path without the root
     filepath = os.path.join(datetime.now().strftime(write_path_template), filename)
     return filepath
@@ -254,7 +254,7 @@ class EncoderFS(Encoder):
         # without the root, but with data path + date folders
         full_path = make_filename(filename)
         # with the root
-        self._full_path = os.path.join(ROOT_PATH, full_path)  # stash for future reference
+        self._full_path = os.path.join(ROOT_PATH, RAW_PATH, full_path)  # stash for future reference
 
         # FIXME: Quick TEMPORARY fix for beamline disaster
         # we are writing the file to a temp directory in the ioc and
@@ -648,7 +648,7 @@ class Adc(Device):
 class AdcFS(Adc):
     "Adc Device, when read, returns references to data in filestore."
     chunk_size = 1024
-    write_path_template = os.path.join(ROOT_PATH, RAW_FILEPATH, '/%Y/%m/%d')
+    write_path_template = os.path.join(ROOT_PATH, RAW_PATH, '/%Y/%m/%d')
 
     def __init__(self, *args, **kwargs):
         self.file_move_executor = ThreadPoolExecutor(max_workers=2)

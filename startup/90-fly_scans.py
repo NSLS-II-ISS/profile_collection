@@ -220,7 +220,7 @@ def fly_scan_rixs_w_pilatus(name: str, comment: str, n_cycles: int = 1, delay: f
                                   energy_max + energy_step,
                                   energy_step)
 
-    filename_uid_bundle = f"{ROOT_PATH}/{USER_FILEPATH}/{RE.md['year']}/{RE.md['cycle']}/{RE.md['PROPOSAL']}/{name}.uids"
+    filename_uid_bundle = f"{ROOT_PATH}/{USER_PATH}/{RE.md['year']}/{RE.md['cycle']}/{RE.md['PROPOSAL']}/{name}.uids"
     print(f'Uids will be stored under  {filename_uid_bundle}')
 
     for indx in range(int(n_cycles)):

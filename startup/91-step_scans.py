@@ -178,7 +178,7 @@ def step_scan_rixs_w_pilatus(name: str, comment: str, n_cycles: int = 1, delay: 
             _name = f'{name} {indx + 1}'
             resume_flag = False
 
-        filename_uid_bundle = f"{ROOT_PATH}/{USER_FILEPATH}/{RE.md['year']}/{RE.md['cycle']}/{RE.md['PROPOSAL']}/{_name}.uids"
+        filename_uid_bundle = f"{ROOT_PATH}/{USER_PATH}/{RE.md['year']}/{RE.md['cycle']}/{RE.md['PROPOSAL']}/{_name}.uids"
         print(f'Uids will be stored in  {filename_uid_bundle}')
         rixs_logger = RIXSLogger(filename_uid_bundle, resume_flag=resume_flag)
 

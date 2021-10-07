@@ -280,7 +280,7 @@ def tabulate_hhmy_position_plan(stdout=sys.stdout):
                                   'hhrmy' : hhrm.y.user_readback.get(),
                                   'uid' : uid},
                                    ignore_index=True)
-        data_df.to_json('/nsls2/xf08id/Sandbox/Beamline_components/2021_09_09_beamline_tabulation/beamline_hhmy_hhrmy_tabulation_high_energies.json')
+        data_df.to_json(f'{ROOT_PATH_SHARED}/Sandbox/Beamline_components/2021_09_09_beamline_tabulation/beamline_hhmy_hhrmy_tabulation_high_energies.json')
 
 
 
