@@ -88,6 +88,23 @@ dpb_sec_nelm = EpicsSignalRO(f'{dpb_sec.pvname}.NELM', name='dpb_sec_nelm')
 dpb_nsec = pb4.di.nsec_array
 dpb_nsec_nelm = EpicsSignalRO(f'{dpb_nsec.pvname}.NELM', name='dpb_nsec_nelm')
 
+from event_model import compose_datum_page, schema_validators, DocumentNames, schemas
+
+# resource, datum_ids, datum_kwarg_list)
+def compose_bulk_datum(*, resource_uid, counter, datum_kwargs, validate=True):
+    # print_message_now(datum_kwargs)
+    # any_column, *_ = datum_kwargs
+    # print_message_now(any_column)
+    N = len(datum_kwargs)
+    # print_message_now(N)
+    doc = {'resource': resource_uid,
+           'datum_ids': ['{}/{}'.format(resource_uid, next(counter)) for _ in range(N)],
+           'datum_kwarg_list': datum_kwargs}
+    # if validate:
+    #     schema_validators[DocumentNames.bulk_datum].validate(doc)
+    return doc
+
+
 
 class ISSXspress3Detector(XspressTrigger, Xspress3Detector):
     roi_data = Cpt(PluginBase, 'ROIDATA:')
@@ -182,13 +199,25 @@ class ISSXspress3Detector(XspressTrigger, Xspress3Detector):
         num_frames = self.hdf5.num_captured.get()
 
         # print(f'\n!!! num_frames: {num_frames}\n')
+        resource_uid = self.hdf5._resource_uid
 
+        # [{'frame' : i} for i in np.arange(num_frames)]
+        datum_kwargs = [{'frame': i} for i in range(num_frames)]
+        # datum_kwargs = np.arange(num_frames).tolist()
+        print_message_now('Composing datum page')
+        doc = compose_bulk_datum(resource_uid=resource_uid,
+                                 counter=self._datum_counter,
+                                 datum_kwargs=datum_kwargs)
+        print_message_now('DONE Composing datum page')
+        print_message_now(doc)
+        self._asset_docs_cache.append(('bulk_datum', doc))
+        _datum_id_counter = itertools.count()
         for frame_num in range(num_frames):
-            datum_id = '{}/{}'.format(self.hdf5._resource_uid, next(self._datum_counter))
-            datum = {'resource': self.hdf5._resource_uid,
-                     'datum_kwargs': {'frame': frame_num},
-                     'datum_id': datum_id}
-            self._asset_docs_cache.append(('datum', datum))
+            datum_id = '{}/{}'.format(resource_uid, next(_datum_id_counter))
+            #     datum = {'resource': _resource,
+            #              'datum_kwargs': {'frame': frame_num},
+            #              'datum_id': datum_id}
+            #     self._asset_docs_cache.append(('datum', datum))
             self._datum_ids.append(datum_id)
 
         return NullStatus()
@@ -400,9 +429,12 @@ class ISSXspress3DetectorStream(ISSXspress3Detector):
         print(f'{ttime.ctime()} Xspress3 collect is complete')
 
     def collect_asset_docs(self):
+        # print(f'                {ttime.ctime()} converting to list start')
         items = list(self._asset_docs_cache)
+        # print(f'                {ttime.ctime()} converting to list end. len(items)={len(items)}')
         self._asset_docs_cache.clear()
-        for item in items:
+        for i, item in enumerate(items):
+            # print(f'                {ttime.ctime()} yielding item {i}')
             yield item
 
 

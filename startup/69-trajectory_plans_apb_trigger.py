@@ -77,8 +77,12 @@ class FlyerXS(FlyerAPBwithTrigger):
 
     def collect_asset_docs(self):
         print(f'{ttime.ctime()} Plan collect_asset_docs is starting...')
+        print(f'                     {ttime.ctime()} super start')
         yield from super().collect_asset_docs()
+        print(f'                     {ttime.ctime()} super end')
+        print(f'                     {ttime.ctime()} xs3 start')
         yield from self.xs_det.collect_asset_docs()
+        print(f'                     {ttime.ctime()} xs3 end')
         print(f'{ttime.ctime()} Plan collect_asset_docs is complete')
 
     def collect(self):

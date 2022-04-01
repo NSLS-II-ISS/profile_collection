@@ -28,6 +28,9 @@ import xraydb
 def print_now():
     return datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S.%f')
 
+def print_message_now(message):
+    print(f"({datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S.%f')}) {message}")
+
 # Qt config for 4K displays.
 os.environ['QT_AUTO_SCREEN_SCALE_FACTOR'] = '0'
 
@@ -74,12 +77,51 @@ if not OLD_BLUESKY:
     EpicsSignalBase.set_defaults(timeout=10, connection_timeout=10)
 
 
+from databroker.v0 import Broker
+
+class Broker_local(Broker):
+
+    def insert(self, name, doc):
+        """
+        Insert a new document.
+        Parameters
+        ----------
+        name : {'start', 'descriptor', 'event', 'stop'}
+            Document type
+        doc : dict
+            Document
+        """
+        print_message_now(name)
+        # super().insert(name, doc)
+        if name in {'event', 'bulk_events', 'descriptor'}:
+            return self.event_source_for_insert.insert(name, doc)
+        # We are transitioning from ophyd objects inserting directly into a
+        # Registry to ophyd objects passing documents to the RunEngine which in
+        # turn inserts them into a Registry. During the transition period, we
+        # allow an ophyd object to attempt BOTH so that configuration files are
+        # compatible with both the new model and the old model. Thus, we
+        # need to ignore the second attempt to insert.
+        elif name == 'datum':
+            return self.reg.insert_datum(ignore_duplicate_error=True, **doc)
+        elif name == 'bulk_datum':
+            return self.reg.bulk_insert_datum(**doc)
+        elif name == 'resource':
+            return self.reg.insert_resource(ignore_duplicate_error=True, **doc)
+        elif name in {'start', 'stop'}:
+            return self.hs.insert(name, doc)
+        else:
+            raise ValueError
+
+
 if OLD_BLUESKY:
-    nslsii.configure_base(get_ipython().user_ns, 'iss') #, pbar=False)
+    nslsii.configure_base(get_ipython().user_ns, 'iss-local') #, pbar=False)
+    # nslsii.configure_base(get_ipython().user_ns, 'iss')  # , pbar=False)
 else:
     # We need to use v0 to have a pandas.Dataframe type returned via hdr.data() using the APBBinFileHandler handler.
     from databroker.v0 import Broker
-    db = Broker.named('iss')
+    # db = Broker.named('iss-local')
+    db = Broker_local.named('iss-local')
+    # db = Broker_local.named('iss')
     db_proc = get_spectrum_catalog()
     nslsii.configure_base(get_ipython().user_ns, db, pbar=False)
 
@@ -93,6 +135,10 @@ logger_db.setLevel('WARNING')
 
 bec.disable_plots()
 bec.disable_table()
+#
+# from bluesky.run_engine import RunEngine
+#
+# RE = RunEngine({})
 RE.subscribe(bec)
 peaks = bec.peaks  # just as alias for less typing
 
