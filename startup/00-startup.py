@@ -239,7 +239,8 @@ else:
     from matplotlib.backends.backend_qt5 import _create_qApp
 
     _create_qApp()
-    qApp = matplotlib.backends.backend_qt5.qApp
+    # Commenting out the next line as it causes failures with 2021-3.1 conda envs.
+    # qApp = matplotlib.backends.backend_qt5.qApp
 
 
 RE.is_aborted = False

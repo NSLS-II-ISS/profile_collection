@@ -7,6 +7,12 @@ resources:
       endpoint: github
 
 jobs:
-- template: collection-2021-1.0.yml@templates
-  parameters:
-    beamline_acronym: ISS
+  - template: collection-2021-1.2.yml@templates
+    parameters:
+      beamline_acronym: ISS
+  - template: nsls2-collection-2021-3.1-py37.yml@templates
+    parameters:
+      beamline_acronym: ISS
+  - template: nsls2-collection-2021-3.1-py39.yml@templates
+    parameters:
+      beamline_acronym: ISS
