@@ -347,6 +347,7 @@ class PilatusStreamHDF5(PilatusHDF5):
             if datum_key_dict['data_type'] == 'image':
                 value = {'source': 'PIL100k_HDF5',
                          'dtype': 'array',
+                         'dtype_str': '<i4',
                          # 'shape': [self.cam.num_images.get(),
                          'shape': [self.hdf5.num_capture.get(),
                                    self.hdf5.array_size.height.get(),
@@ -356,6 +357,7 @@ class PilatusStreamHDF5(PilatusHDF5):
             elif datum_key_dict['data_type'] == 'roi':
                 value = {'source': 'PIL100k_HDF5',
                          'dtype': 'array',
+                         'dtype_str': '<i4',
                          # 'shape': [self.cam.num_images.get()],
                          'shape': [self.hdf5.num_capture.get()],
                          'dims': ['frames'],

@@ -421,8 +421,6 @@ class ISSXspress3DetectorStream(ISSXspress3Detector):
         return_dict_trig = self.ext_trigger_device.describe_collect()
         return {**return_dict_xs, **return_dict_trig}
 
-
-
     def collect_asset_docs(self):
         items = list(self._asset_docs_cache)
         # print_to_gui(f"items = {items}", tag='XS DEBUG')
