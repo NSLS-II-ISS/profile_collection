@@ -115,7 +115,7 @@ logger_db = logging.getLogger('databroker')
 logger_db.setLevel('WARNING')
 
 bec.disable_plots()
-bec.disable_table()
+# bec.disable_table()
 RE.subscribe(bec)
 peaks = bec.peaks  # just as alias for less typing
 
