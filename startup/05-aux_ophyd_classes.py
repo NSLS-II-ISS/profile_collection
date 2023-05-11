@@ -179,7 +179,7 @@ def ramp_plan_with_multiple_monitors(go_plan, monitor_list, inner_plan_func,
     mon_rest = monitor_list[1:]
     ramp_plan = bp.ramp_plan(go_plan, mon1, inner_plan_func,
                                 take_pre_data=take_pre_data, timeout=timeout, period=period, md=md)
-    yield from monitor_during_wrapper(ramp_plan, mon_rest)
+    return (yield from monitor_during_wrapper(ramp_plan, mon_rest))
 
 
 from ophyd.utils import AlarmSeverity

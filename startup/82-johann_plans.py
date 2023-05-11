@@ -229,12 +229,19 @@ def quick_crystal_motor_scan(motor_description=None, scan_range=None, velocity=N
     # yield from bps.null()
     # yield from bps.sleep(2)
     start_acquiring_plan = bps.mv(pil100k.cam.acquire, 1)
-    yield from ramp_motor_scan(motor_device, detectors, scan_range, velocity=velocity, return_motor_to_initial_position=True, start_acquiring_plan=start_acquiring_plan)
+    uid = yield from ramp_motor_scan(motor_device, detectors, scan_range, velocity=velocity, return_motor_to_initial_position=True, start_acquiring_plan=start_acquiring_plan)
 
     pil100k.set_exposure_time(pil100k_init_exposure_time)
     pil100k.set_num_images(pil100k_init_num_images)
     pil100k.cam.image_mode.set(pil100k_init_image_mode).wait()
 
+    return uid
+
+
+def main_roll_optimization_plan():
+    return (yield from quick_crystal_motor_scan(motor_description='Johann Main Crystal Roll',
+                           scan_range=800,
+                           velocity=30))
 
 
 # RE(quick_crystal_motor_scan(motor_description='Johann Main Crystal Roll',

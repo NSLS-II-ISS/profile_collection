@@ -109,13 +109,13 @@ def ramp_motor_scan(motor=None, detector_channels=None, range=0,  sleep = 0.2, v
     ramp_plan = ramp_plan_with_multiple_monitors(_move_plan(), [motor] + detector_channels, bps.null)
     if start_acquiring_plan is not None:
         yield from start_acquiring_plan
-    yield from ramp_plan
+    uid = yield from ramp_plan
     if velocity is not None:
         yield from bps.mv(motor.velocity, old_motor_velocity)
     if return_motor_to_initial_position:
         yield from bps.mvr(motor, -range / 2)
 
-
+    return uid
 
 def quick_tuning_scan(motor=None, detector=None, channel=None, scan_range=None, velocity=None, n_tries = 3, plot_func=None, liveplot_kwargs=None):
     motor_device = get_motor_device(motor, based_on='object_name')
