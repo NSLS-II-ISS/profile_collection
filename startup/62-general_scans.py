@@ -96,7 +96,7 @@ def tuning_scan(motor=None, detector=None, scan_range=None, scan_step=None, n_tr
                 yield from bps.mv(motor, motor_pos)
                 break
 
-def ramp_motor_scan(motor=None, detector_channels=None, range=0,  sleep = 0.2, velocity = None):
+def ramp_motor_scan(motor=None, detector_channels=None, range=0,  sleep = 0.2, velocity = None, return_motor_to_initial_position=False, start_acquiring_plan=None):
     yield from bps.mvr(motor, -range / 2)
     yield from bps.sleep(sleep)
     if velocity is not None:
@@ -107,9 +107,13 @@ def ramp_motor_scan(motor=None, detector_channels=None, range=0,  sleep = 0.2, v
         yield from bps.mvr(motor, range)
         yield from bps.sleep(sleep)
     ramp_plan = ramp_plan_with_multiple_monitors(_move_plan(), [motor] + detector_channels, bps.null)
+    if start_acquiring_plan is not None:
+        yield from start_acquiring_plan
     yield from ramp_plan
     if velocity is not None:
         yield from bps.mv(motor.velocity, old_motor_velocity)
+    if return_motor_to_initial_position:
+        yield from bps.mvr(motor, -range / 2)
 
 
 

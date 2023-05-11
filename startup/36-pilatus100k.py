@@ -141,7 +141,7 @@ class PilatusBase(SingleTriggerV33, PilatusDetectorCam):
         return self.cam.acquire_period.get()
 
     def set_exposure_time(self, exp_t):
-        self.cam.acquire_time.put(exp_t - self.readout)
+        self.cam.acquire_time.put(np.floor((exp_t - self.readout) * 1000) / 1000)
         self.cam.acquire_period.put(exp_t)
 
     def set_num_images(self, num):

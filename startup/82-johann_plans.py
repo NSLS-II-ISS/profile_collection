@@ -196,3 +196,101 @@ def johann_resolution_scan_plan_bundle(e_cen=8000.0, e_width=10.0, e_velocity=2.
                   'plan_gui_services': plan_gui_services})
 
     return plans
+
+
+
+def quick_crystal_motor_scan(motor_description=None, scan_range=None, velocity=None, pil100k_exosure_time=0.1, plot_func=None, liveplot_kwargs=None):
+    motor_device = get_motor_device(motor_description, based_on='description')
+    # detector_device = get_detector_device_list([detector], flying=False)[0]
+    # detector_channel = get_detector_channel(detector, channel)
+
+    detectors = [apb.ch1, pil100k.stats1.total, pil100k.stats2.total, pil100k.stats3.total, pil100k.stats4.total, ]
+
+    print_to_gui(f'Quick scanning motor {motor_description}', tag='Spectrometer')
+
+    num_images = (scan_range / velocity  + 1) / pil100k_exosure_time
+    print(num_images)
+    pil100k_init_exposure_time = pil100k.cam.acquire_period.get()
+    pil100k_init_num_images = pil100k.cam.num_images.get()
+    pil100k_init_image_mode = pil100k.cam.image_mode.get()
+
+
+    pil100k.set_exposure_time(pil100k_exosure_time)
+
+    for i in range(10):
+        if pil100k.cam.num_images.get() != num_images:
+            pil100k.set_num_images(num_images)
+            yield from bps.sleep(0.1)
+        else:
+            break
+
+    pil100k.cam.image_mode.set(1).wait()
+
+    # yield from bps.null()
+    # yield from bps.sleep(2)
+    start_acquiring_plan = bps.mv(pil100k.cam.acquire, 1)
+    yield from ramp_motor_scan(motor_device, detectors, scan_range, velocity=velocity, return_motor_to_initial_position=True, start_acquiring_plan=start_acquiring_plan)
+
+    pil100k.set_exposure_time(pil100k_init_exposure_time)
+    pil100k.set_num_images(pil100k_init_num_images)
+    pil100k.cam.image_mode.set(pil100k_init_image_mode).wait()
+
+
+
+# RE(quick_crystal_motor_scan(motor_description='Johann Main Crystal Roll',
+#                            scan_range=800,
+#                            velocity=50))
+
+# def _estimate_width_of_the_peak
+# from numpy.polynomial import Polynomial
+
+from scipy.signal import savgol_filter
+def estimate_center_and_width_of_peak(E, I):
+    E_cen = E[np.argmax(np.abs(I))]
+    e_low = E < E_cen
+    e_high = E > E_cen
+    x1 = np.interp(0.5, I[e_low], E[e_low])
+    x2 = np.interp(0.5, I[e_high][np.argsort(I[e_high])], E[e_high][np.argsort(I[e_high])])
+    fwhm = np.abs(x1 - x2)
+    return E_cen, fwhm, x1, x2
+
+def smooth_any_peak(x, y, n=4):
+    y_fit = savgol_filter(y, 5, 3)
+    return x, y, y_fit
+
+def _estimate_peak_properties(x, y, plotting=False, fignum=None, clear=False):
+    y_smooth = savgol_filter(y, 5, 3)
+    y_smooth_bkg = np.mean(y_smooth[y_smooth<=np.percentile(y_smooth, 3 / y.size * 100)])
+    y_smooth_max = y_smooth.max()
+    y_smooth = (y_smooth - y_smooth_bkg) / (y_smooth_max - y_smooth_bkg)
+    x_cen, x_fwhm, x1, x2 = estimate_center_and_width_of_peak(x, y_smooth)
+    if plotting:
+        plt.figure(fignum, clear=clear)
+        plt.plot(x, (y - y_smooth_bkg) / (y_smooth_max - y_smooth_bkg), 'k.')
+        plt.plot(x, y_smooth, 'r-')
+        plt.vlines([x1, x2], 0, 1, colors='g')
+        plt.hlines([0.5], x1, x2, colors='g')
+    return x_cen, x_fwhm, x1, x2
+
+def _estimate_peak_fwhm(x, y, **kwargs):
+    _, x_fwhm, _, _ = _estimate_peak_properties(x, y, **kwargs)
+    return x_fwhm
+
+def _estimate_peak_fwhm_from_roll_scan(df, x_col, y_col, **kwargs):
+    x = df[x_col].values
+    y = df[y_col].values
+    return _estimate_peak_fwhm(x, y, **kwargs)
+
+# _estimate_peak_fwhm_from_roll_scan(t, 'johann_main_crystal_motor_cr_main_roll', 'pil100k_stats1_total', plotting=True, clear=True)
+
+def estimate_peak_fwhm_from_roll_scan(db, uid, **kwargs):
+    df = process_monitor_scan(db, uid, det_for_time_base='pil100k')
+    return _estimate_peak_fwhm_from_roll_scan(df, 'johann_main_crystal_motor_cr_main_roll', 'pil100k_stats1_total', **kwargs)
+
+
+
+
+
+
+
+

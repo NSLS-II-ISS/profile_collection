@@ -1327,6 +1327,8 @@ plt.plot(t_apb[:, 0], t_apb[:, 1])
 
 
 
+img = bpm_es.get_image_array_data_reshaped()
+
 
 
 

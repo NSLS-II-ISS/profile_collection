@@ -163,9 +163,17 @@ def move_mono_energy(energy : float=-1, with_feedback : bool=True, step : float=
 #         plt.plot(t.time, t[column_name])
 
 
-def process_monitor_scan(db, uid):
+def process_monitor_scan(db, uid, det_for_time_base=None):
     hdr = db[uid]
     df = {}
+    if det_for_time_base is not None:
+        for stream_name in hdr.stream_names:
+            if stream_name.startswith(det_for_time_base):
+                print(f'time base will be determined based on {stream_name}')
+                t = hdr.table(stream_name=stream_name)
+                df['time'] = t['time'].astype(dtype=int).values * 1e-9
+                break
+
     for stream_name in hdr.stream_names:
         t = hdr.table(stream_name=stream_name)
         this_time = t['time'].astype(dtype=int).values * 1e-9
