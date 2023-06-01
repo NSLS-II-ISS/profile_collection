@@ -1,7 +1,8 @@
 
 import sys
+import numpy as np
 
-sys.path.insert(0, '/home/xf08id/Repos/bloptools')
+# sys.path.insert(0, '/home/xf08id/Repos/bloptools')
 
 import bloptools
 from bloptools import bo
@@ -80,3 +81,11 @@ johann_rel_bounds = {'johann_spectrometer_x_x': np.array([-2, 2])}
 
 johann_bounds = np.array([johann_fiducial[dof.name] + johann_rel_bounds[dof.name] for dof in johann_dofs])
 
+
+# # How to run:
+# from bloptools.experiments.nsls2.iss import MaxBeamFlux, flux_digestion, acquisition
+# from bloptools.bayesian import Agent
+
+# boa = Agent(dofs=johann_dofs, bounds=johann_bounds, tasks=[MaxBeamFlux], digestion=flux_digestion, db=db)
+# RE(boa.initialize(init_scheme="quasi-random", n_init=16))
+# Currently fails as can't read the data from the detector.
