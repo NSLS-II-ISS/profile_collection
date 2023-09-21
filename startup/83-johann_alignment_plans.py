@@ -22,7 +22,6 @@ def fly_epics_scan_simple_johann_piezo_plan(crystal=None, axis=None, scan_range=
                                                        relative_trajectory=relative_trajectory, md=md)
 
 
-#
 # plan = epics_fly_scan_custom_johann_piezo_plan(#crystals=['main', 'aux4', 'aux2'],
 #                                                crystals=['main', 'aux2', 'aux3', 'aux4', 'aux5'],
 #                                                 axis='roll',
