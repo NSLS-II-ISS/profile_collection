@@ -87,7 +87,8 @@ agent = Agent(dofs=dofs,
               allow_acquisition_errors=False)
 
 
-for i in range(1):
+for i in range(256):
 
     RE(agent.initialize("qr", n_init=256))
-    RE(agent.learn("ei", n_iter=4, n_per_iter=4, train=True))
+    RE(agent.learn("ei", n_iter=32, n_per_iter=1, train=True))
+    agent.save_data(f"/nsls2/data/iss/legacy/Sandbox/BLOP_Tom/three_crystals_{int(ttime.time())}.h5")
