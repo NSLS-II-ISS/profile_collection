@@ -243,7 +243,7 @@ pb9.wait_for_connection(timeout=10)
 #     def __call__(self):
 #         return self.df
 
-from xas.handlers import PizzaBoxEncHandlerTxtPD
-
-db.reg.register_handler('PIZZABOX_ENC_FILE_TXT_PD',
-                        PizzaBoxEncHandlerTxtPD, overwrite=True)
+# from xas.handlers import PizzaBoxEncHandlerTxtPD
+#
+# db.reg.register_handler('PIZZABOX_ENC_FILE_TXT_PD',
+#                         PizzaBoxEncHandlerTxtPD, overwrite=True)

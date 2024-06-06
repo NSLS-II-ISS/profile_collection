@@ -521,13 +521,13 @@ xs_stream = ISSXspress3DetectorStream('XF:08IDB-ES{Xsp:1}:', name='xs_stream', e
 
 
 
-from xas.handlers import ISSXspress3HDF5Handler, Xspress3HDF5Handler
-
-# heavy-weight file handler
-db.reg.register_handler("XSP3_STEP",
-                        Xspress3HDF5Handler, overwrite=True)
-db.reg.register_handler(ISSXspress3HDF5Handler.HANDLER_NAME,
-                        ISSXspress3HDF5Handler, overwrite=True)
+# from xas.handlers import ISSXspress3HDF5Handler, Xspress3HDF5Handler
+#
+# # heavy-weight file handler
+# db.reg.register_handler("XSP3_STEP",
+#                         Xspress3HDF5Handler, overwrite=True)
+# db.reg.register_handler(ISSXspress3HDF5Handler.HANDLER_NAME,
+#                         ISSXspress3HDF5Handler, overwrite=True)
 
 
 

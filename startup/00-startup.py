@@ -13,14 +13,14 @@ from bluesky.simulators import summarize_plan
 # Check version of bluesky and act accordingly
 from distutils.version import LooseVersion
 from datetime import datetime
-from xview.spectra_db.db_io import get_spectrum_catalog
+# from xview.spectra_db.db_io import get_spectrum_catalog
 import json
 import time as ttime
 import numpy as np
 import pandas as pd
 import xraydb
 from bluesky.utils import PersistentDict
-
+from tiled.client import from_profile
 print(ttime.ctime() + ' >>>> ' + __file__)
 
 # the file paths for acquitision and analysis
@@ -105,8 +105,9 @@ from databroker import Broker
 
 db_archive = Broker.named('iss')
 db = Broker.named('iss-local')
+c = from_profile('nsls2')['iss']['raw']
 
-db_proc = get_spectrum_catalog()
+# db_proc = get_spectrum_catalog()
 nslsii.configure_base(get_ipython().user_ns, db, pbar=False)
 nslsii.configure_kafka_publisher(RE, "iss")
 

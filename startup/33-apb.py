@@ -395,7 +395,7 @@ apb_ave.ch8.amp = None
 _st = apb_stream.divide.set(375)
 
 
-from xas.handlers import APBBinFileHandler
-
-db.reg.register_handler('APB',
-                        APBBinFileHandler, overwrite=True)
+# from xas.handlers import APBBinFileHandler
+#
+# db.reg.register_handler('APB',
+#                         APBBinFileHandler, overwrite=True)
