@@ -522,6 +522,6 @@ from databroker.assets.handlers import HandlerBase, PilatusCBFHandler, AreaDetec
     #     # return self._roi_data
 
 
-from xas.handlers import ISSPilatusHDF5Handler
-db.reg.register_handler('PIL100k_HDF5',
-                         ISSPilatusHDF5Handler, overwrite=True)
+# from xas.handlers import ISSPilatusHDF5Handler
+# db.reg.register_handler('PIL100k_HDF5',
+#                          ISSPilatusHDF5Handler, overwrite=True)
