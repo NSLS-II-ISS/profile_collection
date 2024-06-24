@@ -1,4 +1,5 @@
-import pandas as pd
+print(ttime.ctime() + ' >>>> ' + __file__)
+
 from xas.spectrometer import analyze_elastic_fly_scan, analyze_linewidth_fly_scan, get_optimal_crystal_alignment_position
 from xas.process import get_processed_df_from_uid_for_epics_fly_scan
 

@@ -23,8 +23,10 @@ from bluesky.utils import PersistentDict
 from tiled.client import from_profile
 print(ttime.ctime() + ' >>>> ' + __file__)
 
-# the file paths for acquitision and analysis
+# run this before doing anything
+# export BS_PYTHONPATH=$BS_PYTHONPATH:~/Repos/iss-workflows
 
+# the file paths for acquitision and analysis
 ROOT_PATH_SHARED = '/nsls2/data/iss/legacy/xf08id'
 ROOT_PATH = '/nsls2/data/iss/legacy'
 RAW_PATH = 'raw'
