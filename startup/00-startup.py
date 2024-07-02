@@ -167,9 +167,9 @@ import faulthandler
 faulthandler.enable()
 
 
-def handle_pound_keys_in_md_folder():
-    for filename in os.listdir(runengine_metadata_dir):
-        filepath = runengine_metadata_dir / Path(filename)
+def handle_pound_keys_in_md_folder(folder=''):
+    for filename in os.listdir(folder):
+        filepath = folder / Path(filename)
         os.rename(filepath, str(filepath).replace('#', '%23'))
 # handle_pound_keys_in_md_folder()
 def fix_RE_persistent_dict_md():
