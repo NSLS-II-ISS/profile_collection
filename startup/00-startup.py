@@ -21,6 +21,7 @@ import pandas as pd
 import xraydb
 from bluesky.utils import PersistentDict
 from tiled.client import from_profile
+from tiled.queries import Key, Contains, FullText
 print(ttime.ctime() + ' >>>> ' + __file__)
 
 # run this before doing anything
@@ -108,6 +109,7 @@ from databroker import Broker
 db_archive = Broker.named('iss')
 db = Broker.named('iss-local')
 c = from_profile('nsls2')['iss']['raw']
+c_proc = from_profile('nsls2')['iss']['dev_analyzed']
 
 # db_proc = get_spectrum_catalog()
 nslsii.configure_base(get_ipython().user_ns, db, pbar=False)

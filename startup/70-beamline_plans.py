@@ -96,7 +96,7 @@ def bender_scan_plan_bundle(element, edge, error_message_func=None):
 
 
 def obtain_hhm_calibration_plan(dE=25, is_final=False, propagate_calibration=False, plot_func=None, error_message_func=None, liveplot_kwargs=None):
-    energy_nominal, energy_actual = get_energy_offset(-1, db, db_proc, dE=dE, plot_fun=plot_func)
+    energy_nominal, energy_actual = get_energy_offset(-1, db, c_proc, dE=dE, plot_fun=plot_func)
 
     print_to_gui(f'{ttime.ctime()} [Energy calibration] Energy shift is {energy_actual - energy_nominal:.2f} eV')
     hhm.calibrate(energy_nominal, energy_actual, error_message_func=error_message_func)
@@ -112,13 +112,18 @@ def obtain_hhm_calibration_plan(dE=25, is_final=False, propagate_calibration=Fal
     yield from bps.null()
 
 
+def validate_foil_edge(element, edge):
+    results = c_proc.search(Key('Sample_name') == f'{element} foil').search(Key('Edge') == edge)
+    if len(results) == 0:
+        raise Exception(f'Error: No {element} foil {edge}-edge was found in the database')
+
 def calibrate_mono_energy_plan_bundle(element='', edge='', propagate_calibration=False, dE=25, plan_gui_services=None, question_message_func=None, ):
     # # check if current trajectory is good for this calibration
     # validate_element_edge_in_db_proc(element, edge, error_message_func=error_message_func)
     run_calibration = True
     run_simple_scan = False
     try:
-        db_proc.validate_foil_edge(element, edge)
+        validate_foil_edge(element, edge)
     except Exception as e:
         e_message = str(e)
         print_to_gui(e_message)
