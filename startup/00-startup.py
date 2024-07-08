@@ -24,10 +24,8 @@ from tiled.client import from_profile
 from tiled.queries import Key, Contains, FullText
 print(ttime.ctime() + ' >>>> ' + __file__)
 
-# run this before doing anything
-# export BS_PYTHONPATH=$BS_PYTHONPATH:~/Repos/iss-workflows
-
 # the file paths for acquitision and analysis
+
 ROOT_PATH_SHARED = '/nsls2/data/iss/legacy/xf08id'
 ROOT_PATH = '/nsls2/data/iss/legacy'
 RAW_PATH = 'raw'
