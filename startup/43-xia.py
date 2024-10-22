@@ -37,18 +37,70 @@ import warnings
 '''
 class GeDetector(Device):
     mca1 = Cpt(EpicsSignal, f'mca1.VAL')
+    mca2 = Cpt(EpicsSignal, f'mca2.VAL')
+    mca3 = Cpt(EpicsSignal, f'mca3.VAL')
+    mca4 = Cpt(EpicsSignal, f'mca4.VAL')
+    mca5 = Cpt(EpicsSignal, f'mca5.VAL')
+    mca6 = Cpt(EpicsSignal, f'mca6.VAL')
+    mca7 = Cpt(EpicsSignal, f'mca7.VAL')
+    mca8 = Cpt(EpicsSignal, f'mca8.VAL')
+    mca9 = Cpt(EpicsSignal, f'mca9.VAL')
+    mca10 = Cpt(EpicsSignal, f'mca10.VAL')
+    mca11 = Cpt(EpicsSignal, f'mca11.VAL')
+    mca12 = Cpt(EpicsSignal, f'mca12.VAL')
+    mca13 = Cpt(EpicsSignal, f'mca13.VAL')
+    mca14 = Cpt(EpicsSignal, f'mca13.VAL')
+    
+    mca15 = Cpt(EpicsSignal, f'mca15.VAL')
+    mca16 = Cpt(EpicsSignal, f'mca16.VAL')
+    mca17 = Cpt(EpicsSignal, f'mca17.VAL')
+    mca18 = Cpt(EpicsSignal, f'mca18.VAL')
+    mca19 = Cpt(EpicsSignal, f'mca19.VAL')
+    mca20 = Cpt(EpicsSignal, f'mca20.VAL')
+    mca21 = Cpt(EpicsSignal, f'mca21.VAL')
+    mca22 = Cpt(EpicsSignal, f'mca22.VAL')
+    mca23 = Cpt(EpicsSignal, f'mca23.VAL')
+    mca24 = Cpt(EpicsSignal, f'mca24.VAL')
+    mca25 = Cpt(EpicsSignal, f'mca25.VAL')
+    mca26 = Cpt(EpicsSignal, f'mca26.VAL')
+    mca27 = Cpt(EpicsSignal, f'mca27.VAL')
+    mca28 = Cpt(EpicsSignal, f'mca28.VAL')
+    mca29 = Cpt(EpicsSignal, f'mca29.VAL')
+    mca30 = Cpt(EpicsSignal, f'mca30.VAL')
+    mca31 = Cpt(EpicsSignal, f'mca31.VAL')
+    mca32 = Cpt(EpicsSignal, f'mca32.VAL')
+    
+    
+    preamp_gain1 = Cpt(EpicsSignal, 'dxp1:PreampGain')
+    preamp_gain2 = Cpt(EpicsSignal, 'dxp2:PreampGain')
+    preamp_gain3 = Cpt(EpicsSignal, 'dxp3:PreampGain')
+    preamp_gain4 = Cpt(EpicsSignal, 'dxp4:PreampGain')
+    preamp_gain5 = Cpt(EpicsSignal, 'dxp5:PreampGain')
+    preamp_gain6 = Cpt(EpicsSignal, 'dxp6:PreampGain')
+    preamp_gain7 = Cpt(EpicsSignal, 'dxp7:PreampGain')
+    
+    
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
 
 
 
 ge_detector = GeDetector('XF:08IDB-ES{GE-Det:1}', name='ge_detector')
-XF:08IDB-ES{GE-Det:1}mca1.R0LO
-XF:08IDB-ES{GE-Det:1}mca1.R0HI
-XF:08IDB-ES{GE-Det:1}mca1.R0
-XF:08IDB-ES{GE-Det:1}mca1.R0NM
 
-XF:08IDB-ES{GE-Det:1}dxp1:PreampGain
+peak_max = 585
+device = ge_detector.preamp_gain2
+coeff=peak_max*2/1150
 
-XF:08IDB-ES{GE-Det:1}StartAll
+current_gain = device.get()
+device.set(current_gain/coeff)
 '''
+
+class GeDetector(Device):
+    for i in range(32):
+        setattr(GeDetector, f'mca{i+1}', Cpt(EpicsSignal, f'mca{i+1}.VAL'))
+        setattr(GeDetector, f'preamp_gain{i+1}',Cpt(EpicsSignal, f'dxp{i+1}:PreampGain'))
+    def __init__(self,*args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+ge_detector = GeDetector('XF:08IDB-ES{GE-Det:1}', name='ge_detector')
