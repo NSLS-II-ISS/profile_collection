@@ -172,18 +172,23 @@ def move_mono_energy(energy : float=-1, with_feedback : bool=True, step : float=
 
 
 def process_monitor_scan(db, uid, det_for_time_base=None):
+    print_to_gui(f'Starting processing', add_timestamp=True, tag='Tuning]')
     hdr = db[uid]
     df = {}
     if det_for_time_base is not None:
         for stream_name in hdr.stream_names:
             if stream_name.startswith(det_for_time_base):
                 print(f'time base will be determined based on {stream_name}')
+                print_to_gui(f'Retreving stream {stream_name}', add_timestamp=True, tag='Tuning]')
                 t = hdr.table(stream_name=stream_name)
+                print_to_gui(f'Stream {stream_name} received', add_timestamp=True, tag='Tuning]')
                 df['time'] = t['time'].astype(dtype=int).values * 1e-9
                 break
 
     for stream_name in hdr.stream_names:
+        print_to_gui(f'Retreving stream {stream_name}', add_timestamp=True, tag='Tuning]')
         t = hdr.table(stream_name=stream_name)
+        print_to_gui(f'Stream {stream_name} received', add_timestamp=True, tag='Tuning]')
         this_time = t['time'].astype(dtype=int).values * 1e-9
         if not 'time' in df.keys():
             df['time'] = this_time

@@ -93,14 +93,15 @@ coeff=peak_max*2/1150
 
 current_gain = device.get()
 device.set(current_gain/coeff)
-'''
+
 
 class GeDetector(Device):
-    for i in range(32):
-        setattr(GeDetector, f'mca{i+1}', Cpt(EpicsSignal, f'mca{i+1}.VAL'))
-        setattr(GeDetector, f'preamp_gain{i+1}',Cpt(EpicsSignal, f'dxp{i+1}:PreampGain'))
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
 
-
+for i in range(32):
+    setattr(GeDetector, f'mca{i+1}', Cpt(EpicsSignal, f'mca{i+1}.VAL'))
+    setattr(GeDetector, f'preamp_gain{i+1}',Cpt(EpicsSignal, f'dxp{i+1}:PreampGain'))
 ge_detector = GeDetector('XF:08IDB-ES{GE-Det:1}', name='ge_detector')
+
+'''

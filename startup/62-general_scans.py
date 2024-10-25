@@ -108,6 +108,7 @@ def tuning_scan(motor=None, detector=None, scan_range=None, scan_step=None, n_tr
 def ramp_motor_scan(motor=None, detector_channels=None, range=0,  sleep = 0.2, velocity = None, return_motor_to_initial_position=False, start_acquiring_plan=None, md=None):
     yield from bps.mvr(motor, -range / 2)
     yield from bps.sleep(sleep)
+    print_to_gui(f'Setting velocity', add_timestamp=True, tag='Tuning')
     if velocity is not None:
         old_motor_velocity = motor.velocity.get()
         yield from bps.mv(motor.velocity, velocity)
@@ -115,14 +116,23 @@ def ramp_motor_scan(motor=None, detector_channels=None, range=0,  sleep = 0.2, v
     def _move_plan():
         yield from bps.mvr(motor, range)
         yield from bps.sleep(sleep)
+
+
     ramp_plan = ramp_plan_with_multiple_monitors(_move_plan(), [motor] + detector_channels, bps.null, md=md)
+
     if start_acquiring_plan is not None:
+        print_to_gui(f'Starting start acquiring plan', add_timestamp=True, tag='Tuning')
         yield from start_acquiring_plan
+    print_to_gui(f'Starting ramp scan', add_timestamp=True, tag='Tuning')
     yield from ramp_plan
+    print_to_gui(f'Ramp scan complete', add_timestamp=True, tag='Tuning')
+
     if velocity is not None:
+        print_to_gui(f'Setting velocity to initial value', add_timestamp=True, tag='Tuning')
         yield from bps.mv(motor.velocity, old_motor_velocity)
     if return_motor_to_initial_position:
         yield from bps.mvr(motor, -range / 2)
+
 
 
 
